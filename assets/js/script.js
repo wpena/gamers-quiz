@@ -1,3 +1,5 @@
+// console.log(quizQuestions); --> checking to make sure can access the questions js file 
+
 /*
 Create a code quiz that contains the following requirements: (5 Quiz questions is enough)
 
