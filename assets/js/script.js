@@ -54,6 +54,7 @@ let questionsEl = document.getElementById('questions');
 let timeEl = document.getElementById('time');
 let questionTitle = document.getElementById('question-title');
 let choicesEl = document.getElementById('choices');
+let feedBackEl = document.getElementById('feedback');
 
 
 let questionIndex = 0;
@@ -103,5 +104,38 @@ function startTimer() {
       clearInterval(timeInterval);
       endQuiz();
     }
+  }, 1000);
+}
+
+function checkAnswer(playerChoice) {
+  let playerAnswer = playerChoice.target.textContent;
+  let correctAnswer = quizQuestions.questions[questionIndex].answer;
+
+  // Compare selected answer to correct answer
+  if (playerAnswer === correctAnswer ) {
+    showFeedback('Correct!', 'green');
+    questionIndex++;
+  } else {
+    showFeedback('Wrong! -10 seconds!', 'red');
+    timeLeft -= 10;
+    questionIndex++;
+  }
+
+  setTimeout(function() {
+    if (questionIndex < quizQuestions.questions.length) {
+      showQuestion();
+    } else {
+      endQuiz();
+    }
+  });
+}
+
+function showFeedback(feedback, color) {
+  feedBackEl.textContent = feedback;
+  feedBackEl.style.color = color;
+  feedBackEl.classList.remove('hide');
+
+  setTimeout(function() {
+    feedBackEl.classList.add('hide');
   }, 1000);
 }
