@@ -49,12 +49,16 @@ When the game ends, it should display their score and give the user the ability 
 // High scores are listed, sorted highest to lowest
 // User has the option to take the quiz again
 
-let startBtn = document.getElementById('start');
-let questionsEl = document.getElementById('questions');
-let timeEl = document.getElementById('time');
-let questionTitle = document.getElementById('question-title');
-let choicesEl = document.getElementById('choices');
-let feedBackEl = document.getElementById('feedback');
+const startBtn = document.getElementById('start');
+const questionsEl = document.getElementById('questions');
+const timeEl = document.getElementById('time');
+const questionTitle = document.getElementById('question-title');
+const choicesEl = document.getElementById('choices');
+const feedBackEl = document.getElementById('feedback');
+const scoreEl = document.getElementById('final-score');
+const endScreenEl = document.getElementById('end-screen');
+let initialsInput = document.getElementById("initials");
+let submitBtn = document.getElementById('submit');
 
 
 let questionIndex = 0;
@@ -81,7 +85,7 @@ function startQuiz() {
 
 // Function to display a question
 function showQuestion() {
-  let currentQuestion = quizQuestions.questions[questionIndex];
+  const currentQuestion = quizQuestions.questions[questionIndex];
   questionTitle.textContent = currentQuestion.question;
 
   choicesEl.innerHTML = "";
@@ -108,8 +112,8 @@ function startTimer() {
 }
 
 function checkAnswer(playerChoice) {
-  let playerAnswer = playerChoice.target.textContent;
-  let correctAnswer = quizQuestions.questions[questionIndex].answer;
+  const playerAnswer = playerChoice.target.textContent;
+  const correctAnswer = quizQuestions.questions[questionIndex].answer;
 
   // Compare selected answer to correct answer
   if (playerAnswer === correctAnswer ) {
@@ -137,5 +141,23 @@ function showFeedback(feedback, color) {
 
   setTimeout(function() {
     feedBackEl.classList.add('hide');
-  }, 1000);
+  }, 500);
+}
+
+function endQuiz() {
+  questionsEl.classList.add('hide');
+  endScreenEl.classList.remove('hide');
+  scoreEl.textContent = timeLeft;
+}
+saveQuiz();
+
+function saveQuiz() {
+  submitBtn.addEventListener('click', function() {
+    let playerInitials = initialsInput.value.trim();
+
+    if (playerInitials !== '');
+    let highScore = JSON.parse(localStorage.getItem('highScore')) || [];
+    highScore.push({ initials: playerInitials, score: timeLeft });
+    localStorage.setItem('highScore', JSON.stringify(highScore));
+  });
 }
