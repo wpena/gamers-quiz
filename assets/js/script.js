@@ -50,8 +50,11 @@ When the game ends, it should display their score and give the user the ability 
 // User has the option to take the quiz again
 
 let startBtn = document.getElementById('start');
-let questionsContainer = document.getElementById('questions');
+let questionsEl = document.getElementById('questions');
 let timeEl = document.getElementById('time');
+let questionTitle = document.getElementById('question-title');
+let choicesEl = document.getElementById('choices');
+
 
 let questionIndex = 0;
 
@@ -64,29 +67,41 @@ startBtn.addEventListener('click', startQuiz);
 function startQuiz() {
   startBtn.parentNode.classList.add('hide');
 
-  // Hide landing page and show questions
-  questionsContainer.classList.remove('hide');
+  // Hide landing page and show question
+  questionsEl.classList.remove('hide');
 
+  // Show the first question
+  showQuestion();
+
+  // Begin countdown
+  startTimer();
+}
+
+
+// Function to display a question
+function showQuestion() {
+  let currentQuestion = quizQuestions.questions[questionIndex];
+  questionTitle.textContent = currentQuestion.question;
+
+  choicesEl.innerHTML = "";
+
+  for (let i = 0; i < currentQuestion.choices.length; i++) {
+    let choiceBtn = document.createElement("button");
+    choiceBtn.textContent = currentQuestion.choices[i];
+    choiceBtn.addEventListener("click", checkAnswer);
+    choicesEl.appendChild(choiceBtn);
+  }
+}
+
+function startTimer() {
   // Start timer once button is clicked
-  const timeInterval = setInterval(function () {
+  let timeInterval = setInterval(function () {
     timeLeft--;
     timeEl.textContent = timeLeft;
 
     if (timeLeft <= 0 || questionIndex === quizQuestions.questions.length) {
       clearInterval(timeInterval);
+      endQuiz();
     }
   }, 1000);
 }
-
-
-
-// function startQuiz() {
-//   const timeInterval = setInterval(function () {
-//     timeLeft--;
-//     timeEl.textContent = timeLeft;
-
-//     if (timeLeft === 0) {
-//       clearInterval(timeInterval);
-//     }
-//   }, 1000);
-// }
